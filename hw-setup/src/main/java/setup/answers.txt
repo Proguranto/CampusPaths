@@ -47,5 +47,8 @@ as computeSum(), with the line number being 43 ("computeSum:43, Adder(setup)").
 
 
 3. What are all the names and values listed in the “Variables” panel after each of the two step overs?
+After the first step over:
+- In the "Variables" panel there are "x = 3", "y = 4".
+After the second step over:
 - In the "Variables" panel there are "x = 3", "y = 4", and "sum = -1".
 
