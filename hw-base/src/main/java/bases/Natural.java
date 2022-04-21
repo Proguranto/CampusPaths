@@ -64,17 +64,29 @@ public class Natural {
    *     0 if none are non-zero
    */
   public static int leadingDigit(int[] digits) {
-    // TODO: Implement this method with a loop, and include a loop invariant.
-    //       Your code must be correct with the invariant you write (tests don't check this!).
-    //       Include an explanation of why postcondition holds at each return statement.
-    //       You can use the template given right before the postcondition in this method.
 
-    int i = 0;  // TODO: feel free to change 0 to something else
+    int i = digits.length - 1;
 
-    // TODO: write your loop here
+    // Inv: D[i + 1] = ... = D[n - 1] = 0
+    while (i != 0) {
+      if (digits[i] != 0) {
+        // At this point in the code, we know that D[i + 1] = ... = D[n - 1] = 0
+        // and i != 0 and D[i] != 0.
+        // This implies the postcondition below, since this is one of the states
+        // of the postcondition, more specifically it is the state when
+        // D[i + 1] = ... = D[n - 1] = 0 and i != 0 and D[i] != 0. Therefore,
+        // this means that this is a subset of the postcondition and this implies
+        // the postcondition.
+        return i;
+      }
+      i = i - 1;
+    }
 
-    // At this point in the code, we know that _________.
-    // This implies the postcondition below, since __________.
+    // At this point in the code, we know that D[i + 1] = ... = D[n - 1] = 0
+    // and i = 0.
+    // This implies the postcondition below, since this is one of the states of the
+    // postcondition, more specifically when D[i + 1] = ... = D[n - 1] = 0 and i = 0.
+    // Thus, this is a subset of the postcondition and therefore, it implies the postcondition.
 
     // Post: D[i+1], ..., D[n-1] are all zero and (D[i] != 0 or i = 0)
     return i;
@@ -188,27 +200,34 @@ public class Natural {
     // Hints: 1. Compare this invariant to the one from getValue above
     //        2. Take advantage of the existing methods, plus and times.
     //
-    // TODO: Implement the method below, whose invariant is provided.
-    //       Your code must be correct with the invariant written.
-    //       Include a comment explaining why the postcondition follows from
-    //           the facts we know from above it.
 
     Natural r = new Natural(base);
     Natural b = new Natural(base, this.base);
 
-    // TODO: Initialize i,j such that the invariant below holds initially.
-    int i = -1;
+    int i = this.digits.length;
     int j = -1;
 
     // Inv: r = (base, D[i] b^0 + D[i+1] b^1 + ... + D[n-1] b^j) and i+j = n-1,
     //      where D = this.digits, n = this.digits.length, and b = this.base
-    while (i != -1) {  // TODO: Replace the condition here with a suitable one.
+    while (i != 0) {
+      r = r.times(b);
+      r = r.plus(new Natural(base, this.digits[i - 1]));
 
-      // TODO: Implement the body of this loop, so that it's correct with the given invariant.
-
+      i = i - 1;
+      j = j + 1;
     }
 
-    // TODO: Explain why the postcondition holds at the end of this code.
+    // At this point in the code, we know that
+    // r = (base, D[0] b^0 + D[1] b^1 + ... + D[n-1] b^n-1) where
+    // D = this.digits and b = this.base. Therefore,
+    // this.getValue() is = D[0] b^0 + D[1] b^1 + ... + D[n-1] b^n-1.
+    // Thus, we can simplify the above expression as
+    // r = (base, this.getValue()) which is the same as the postcondition.
+    // Hence, since they are equivalent conditions, they imply each other
+    // and the postcondition holds at the end of this code.
+    // Additionally, the RI still holds at the end of the method, since
+    // this method does not modify any of the fields thus they still
+    // satisfy the RI.
     // Post: r = (base, this.value())
     return r;
   }
@@ -219,18 +238,24 @@ public class Natural {
    * @return The string of digits corresponding to this value in this base.
    */
   public String toString() {
-    // TODO: Implement this method with a loop, and include a loop invariant.
-    //       Your code must be correct with the invariant you write (tests don't check this!).
-    //       Include an explanation of why postcondition holds at each return statement.
-    //       You can use the template given right before the postcondition in this method.
-
 
     StringBuilder buf = new StringBuilder();
 
-    // TODO: write your loop here
+    int i = this.digits.length;
 
-    // At this point in the code, we know that _________.
-    // This implies the postcondition below, since __________.
+    // Inv: buf = ch(D[n-1]), ch(D[n-2]), ..., ch(D[i])
+    while(i != 0) {
+      buf.append(BaseDigits.digitToChar(this.digits[i - 1], this.base));
+      i = i - 1;
+    }
+
+    // At this point in the code, we know that buf = ch(D[n-1]), ch(D[n-2]), ..., ch(D[0])
+    // and the RI (Representation Invariant) still holds since the code does not modify any of
+    // the fields (base, digits[]). Thus, since the RI was a precondition and none of the fields
+    // were modified, this means that the RI still holds at the end of the method.
+    // This implies the postcondition below, since this contains the postcondition which is
+    // buf = ch(D[n-1]), ch(D[n-2]), ..., ch(D[0]) and the RI, thus making it stronger than
+    // the postcondition.
 
     // Post: buf = ch(D[n-1]), ch(D[n-2]), ..., ch(D[0])
     return buf.toString();
@@ -264,68 +289,78 @@ public class Natural {
     // the array newDigits. The first loop handles the digits that exist in
     // both this and other, and the second loop handles the digits that exist
     // only in this (i.e., when other is shorter). After the loops, newDigits
-    // will represent the correct value, but it it will not yet satisfy the RI.
-
-    // TODO: Before implementing them, write a summary comment above each of
-    //       the next two loops, explaining in English what it does.
+    // will represent the correct value, but it will not yet satisfy the RI.
 
 
-    int i = this.digits.length;  // TODO: Fill in the initialization code such that the invariant holds initially.
+    int i = 0;
 
-    // TODO: Summary comment here
+    // For each index from 0 to other.digits.length-1, the loop
+    // will sum the values from this.digits and other.digits at that corresponding
+    // index and store that value in new_digits at that index.
     // Inv: D[0] = A[0]+B[0], D[1] = A[1]+B[1], ..., D[i-1] = A[i-1]+B[i-1],
     //      where D = new_digits, A = this.digits, and B = other.digits
     while (i != other.digits.length) {
-
-      // TODO: Implement the body of this loop, such that it's correct with the given invariant.
-
+      newDigits[i] = this.digits[i] + other.digits[i];
+      i = i + 1;
     }
 
-    // TODO: Explain why we have D[0] < 2b, D[1] < 2b, ..., D[n-1] < 2b
+    // D[0] < 2b-1, D[1] < 2b-1, ..., D[n-1] < 2b-1 because since D[i] = A[i] + B[i] and
+    // we know that A[i] < b and B[i] < b for i = 0, ..., B.length-1. Therefore, if we consider
+    // the largest integer A[i] and B[i] can be it would be b-1. (b-1)+(b-1)=2b-2 thus
+    // D[0] < 2b-1, D[1] < 2b-1, ..., D[B.length-1] < 2b-1. D[B.length] = ... = D[n-1] = 0 since
+    // it wasn't modified by the loop thus they are the default values when initialized.
+    // 0 < 2b -1 since 2 <= b <= 36, thus D[0] < 2b-1, ..., D[n-1] < 2b-1.
 
-    // TODO: Explain why the invariant of the loop below holds initially (no code needed).
+    // At this point in the code, we know that
+    // D[0] = A[0]+B[0], D[1] = A[1]+B[1], ..., D[B.length-1] = A[B.length-1]+B[B.length-1].
+    // This implies the invariant of the loop below because this is one of the states of
+    // the invariant below, more specifically when i = B.length-1 and
+    // D[0] = A[0]+B[0], ..., D[B.length-1] = A[B.length-1]+B[B.length-1]. Meaning that this
+    // is a subset of the invariant of the loop below and this implies the invariant below,
+    // and the loop below holds initially.
 
-    // TODO: Summary comment here
+    // For each index starting from other.digits.length to this.digits.length-1,
+    // the loop will sum the values of this.digits and other.digits, but for
+    // other.digits we can see from the invariant since the index starts from
+    // other.digits.length that means other.digits is 0 and so the sum becomes
+    // this.digits + 0 = this.digits. Then we take this value and store it in new_digits at
+    // the current index the loop in on.
     // Inv: D[0] = A[0]+B[0], D[1] = A[1]+B[1], ..., D[i-1] = A[i-1]+B[i-1],
     //      where B[k] = other.digits[k] if k < other.digits.length and
     //            B[k] = 0               otherwise
     while (i != this.digits.length) {
 
-      // TODO: Implement the body of this loop, such that it's correct with the given invariant.
-
-
+      newDigits[i] = this.digits[i];
+      i = i + 1;
     }
 
     // Have: D[0] = A[0]+B[0], D[1] = A[1]+B[1], ..., D[n-1] = A[n-1]+B[n-1],
     //       where n = this.digits.length and B is as defined above
     checkZipSum(other.digits, this.digits, newDigits);
 
-
-    // TODO: Remove the next two lines before starting work on the loop below!
-    // They cause the code to always return null, which we only want to do
-    // while you are working on the two loops above. Once those work, remove
-    // these lines and start on the third and final loop below.
-    if (this.digits.length < newDigits.length)
-      return null;
-
-
-    // TODO: Explain why we have
-    //         this.value + other.value = D[0] + D[1] b + ... + D[n-1] b^{n-1}
+    // Since this.value = A[0] + A[1] b + ... + A[n-1] b^{n-1} and
+    // other.value = B[0] + B[1] b + ... + B[n-1] b^{n-1}
+    // where B[k] = other.digits[k] if k < other.digits.length and
+    //       B[k] = 0               otherwise
+    // Then, this.value + other.value =
+    // (A[0]+B[0]) + (A[1]+B[1]) b + ... + (A[n-1]+B[n-1]) b^{n-1}.
+    // From the first two loops we know that,
+    // D[0] = A[0]+B[0], D[1] = A[1]+B[1], ..., D[n-1] = A[n-1]+B[n-1].
+    // Thus by substitution, we get
+    // this.value + other.value = D[0] + D[1] b + ... + D[n-1] b^{n-1}.
 
     // The next loop changes the values in newDigits so that it satisfies the
     // part of the RI that says each digit is between 0 and b-1. It does this
     // *without* changing the value that the digits represent, so they will
     // still represent the value this.value + other.value.
 
-    i = -1;  // TODO: Change this so that the invariant holds initially.
+    i = 0;
 
     // Inv: this.value + other.value = D[0] + D[1] b + ... + D[n-1] b^{n-1} and
     //      D[0] < b, D[1] < b, ..., D[i-1] < b and
     //      D[i] < 2b, D[i+1] < 2b, ..., D[n-1] < 2b
-    while (i != -1) {  // TODO: Replace the condition here with a suitable one.
+    while (i != this.digits.length) {
 
-      // TODO: Implement the body of this loop. The reader must to be able to
-      //       reason through why your code is correct, so keep it simple!
       // NOTE: Do not use div or mod. Simple arithmetic should be enough.
 
       // Hint: Subtracting b from D[i] while adding 1 to D[i+1] does not change
@@ -335,11 +370,40 @@ public class Natural {
       //   = D[i] b^i - b^{i+1} + D[i+1] b^{i+1} + b^{i+1}
       //   = D[i] b^i + D[i+1] b^{i+1]
 
+      if (newDigits[i] >= this.base) {
+        newDigits[i] = newDigits[i] - this.base;
+        newDigits[i + 1] = newDigits[i + 1] + 1;
+      }
+
       i = i + 1;  // NOTE: do not change this line
     }
 
-    // TODO: Explain why (1) the postcondition holds and
-    //                   (2) the preconditions of this constructor hold.
+    // (1) After the third loop we know that the state is
+    // this.value + other.value = D[0] + D[1] b + ... + D[n-1] b^{n-1}
+    // and D[0] < b, D[1] < b, ..., D[n-1] < b. Using the AF we can
+    // translate this to an Abstract state where a new Natural
+    // has value this.value + other.value and base this.base. This is
+    // the same as the promised return value of the method specification
+    // thus it satisfies the postcondition. Since they are equivalent
+    // expressions, they imply each other, thus meaning that the
+    // postcondition holds at the end. Additionally, the RI
+    // must still hold at the end of the method and it still satisfies
+    // the RI since this method does not modify any of the fields.
+    // (2) D = new_natural.digits, b = new_natural.base, n = D.length
+    // Since b is the same as this.base, this means b is within 2 and 36.
+    // Since n >= this.digits.length >= 1 thus n >= 1.
+    // Lastly from the third loop, we know that all digits in D are
+    // between 0 and b - 1.
+    // These are the preconditions of the constructor, therefore since
+    // it satisfies all the preconditions that means that the preconditions
+    // of the constructor still hold. Since the current states
+    // satisfies the conditions of the preconditions, it means
+    // that they are a subset of the precondition, and it implies
+    // the precondition. Thus, the precondition of this constructor still holds.
+
+    //   RI: 2 <= b <= 36 and D != null and n >= 1 and
+    //       if n > 1, then D[n-1] != 0 (no leading zeros) and
+    //       for i = 0 .. n-1, we have 0 <= D[i] < b
     return new Natural(this.base, newDigits);
   }
 
