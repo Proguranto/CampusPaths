@@ -132,10 +132,28 @@ public class SimpleSet {
    * @return this union other
    */
   public SimpleSet union(SimpleSet other) {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct (hint: cases)
+    // If both sets are finite complements, then their union is an infinite set
+    // with its complement being the intersection of the complements of both infinite sets
+    // because the intersection represents elements that are not in both infinite sets.
+    // e.g. R \ {1, 2} U R \ {1, 3} = R \ {1}.
 
-    return new SimpleSet(new float[] {});
+    // If one set is a finite complement and the other is a finite set, then their union
+    // is an infinite set with its complement being
+    // the elements that live in the complement of the infinite set, but are not
+    // in the finite set (i.e. the set difference).
+    // e.g. R \ {1, 2} U {1, 3} = R \ {2} because {1, 2} \ {1,3} = {2}.
+
+    // If both sets are finite sets, then their union is a finite set which is
+    // the union of the finite sets.
+    // e.g. {1, 3} U {2} = {1, 2, 3}
+
+    if (this.isInf && other.isInf) {
+      return new SimpleSet(true, this.pointSet.intersection(other.pointSet));
+    } else if (this.isInf || other.isInf) {
+      return new SimpleSet(true, this.pointSet.difference(other.pointSet));
+    } else {
+      return new SimpleSet(false, this.pointSet.union(other.pointSet));
+    }
   }
 
   /**
@@ -149,7 +167,15 @@ public class SimpleSet {
     //       include sufficient comments to see why it is correct
     // NOTE: There is more than one correct way to implement this.
 
-    return new SimpleSet(new float[] {});
+    if (this.isInf && other.isInf) {
+      return new SimpleSet(true, this.pointSet.union(other.pointSet));
+    } else if (this.isInf) {
+      return new SimpleSet(false, other.pointSet.difference(this.pointSet));
+    } else if (other.isInf) {
+      return new SimpleSet(false, this.pointSet.difference(other.pointSet));
+    } else {
+      return new SimpleSet(false, this.pointSet.intersection(other.pointSet));
+    }
   }
 
   /**

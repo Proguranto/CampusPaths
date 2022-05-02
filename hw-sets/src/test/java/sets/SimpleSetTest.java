@@ -14,12 +14,18 @@ public class SimpleSetTest {
   public void testSize() {
     assertTrue(S.size() == 0);
     assertTrue(R.size() == Float.POSITIVE_INFINITY);
+    assertFalse(S.size() != 0);
+    assertFalse(R.size() != Float.POSITIVE_INFINITY);
 
     assertTrue(S1.size() == 1);
     assertTrue(R1.size() == Float.POSITIVE_INFINITY);
+    assertFalse(S1.size() != 1);
+    assertFalse(R1.size() != Float.POSITIVE_INFINITY);
 
     assertTrue(S12.size() == 2);
     assertTrue(R12.size() == Float.POSITIVE_INFINITY);
+    assertFalse(S12.size() != 2);
+    assertFalse(R12.size() != Float.POSITIVE_INFINITY);
   }
 
   /** Tests converting a set to a string. */
