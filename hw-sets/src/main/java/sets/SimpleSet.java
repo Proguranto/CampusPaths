@@ -98,10 +98,41 @@ public class SimpleSet {
    *     where p1, p2, ... pN are replaced by the individual numbers.
    */
   public String toString() {
-    // TODO: implement this with a loop. document its invariant
-    //       a StringBuilder may be useful for creating the string
+    // I first checked to see if this is a finite complement or not, if it was a finite complement,
+    // then it would append "R" to the front.
+    // If it is a finite complement, I would check size of the complement set, then it would return
+    // just "R" if it was empty, but if it is not it would append "  \ {p1, p2, .., pN}".
+    // If it is a finite set, then I would append "{" and then append all the elements in the finite
+    // set "p1, ..., pN" and then append "}". Note that it avoids an IndexOutOfBounds exception
+    // as it checks just in case the set is empty.
 
-    return "";
+    StringBuilder result = new StringBuilder();
+    if (this.isInf) {
+      result.append("R");
+      if (this.pointSet.size() == 0) {
+        return result.toString();
+      } else {
+        result.append(" \\ {");
+        // Inv: result = R \ {this.pointSize.getPoints(0), ..., this.pointSize.getPoints(i-1),
+        for (int i = 0; i < this.pointSet.size() - 1; i++) {
+          result.append(this.pointSet.getPoints().get(i) + ", ");
+        }
+        result.append(this.pointSet.getPoints().get(this.pointSet.size() - 1) + "}");
+      }
+    } else {
+      result.append('{');
+      // Inv: result = {this.pointSize.getPoints(0), ..., this.pointSize.getPoints(i-1),
+      for (int i = 0; i < this.pointSet.size() - 1; i++) {
+        result.append(this.pointSet.getPoints().get(i) + ", ");
+      }
+      if (this.pointSet.size() == 0) {
+        result.append('}');
+      } else {
+        result.append(this.pointSet.getPoints().get(this.pointSet.size() - 1) + "}");
+      }
+    }
+
+    return result.toString();
   }
 
   /**
@@ -142,6 +173,7 @@ public class SimpleSet {
     // the elements that live in the complement of the infinite set, but are not
     // in the finite set (i.e. the set difference).
     // e.g. R \ {1, 2} U {1, 3} = R \ {2} because {1, 2} \ {1,3} = {2}.
+    // this applies to either when this is a finite complement or other is a finite complement.
 
     // If both sets are finite sets, then their union is a finite set which is
     // the union of the finite sets.
@@ -149,8 +181,10 @@ public class SimpleSet {
 
     if (this.isInf && other.isInf) {
       return new SimpleSet(true, this.pointSet.intersection(other.pointSet));
-    } else if (this.isInf || other.isInf) {
+    } else if (this.isInf) {
       return new SimpleSet(true, this.pointSet.difference(other.pointSet));
+    } else if (other.isInf) {
+      return new SimpleSet(true, other.pointSet.difference(this.pointSet));
     } else {
       return new SimpleSet(false, this.pointSet.union(other.pointSet));
     }
@@ -163,9 +197,20 @@ public class SimpleSet {
    * @return this intersect other
    */
   public SimpleSet intersection(SimpleSet other) {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct
     // NOTE: There is more than one correct way to implement this.
+    // If both sets are finite complements, then their intersection is an infinite set
+    // with its complement being the union of the complements of both infinite sets.
+    // e.g. R \ {1, 2} Intersect R \ {3,4} = R \ {1,2,3,4} where {1,2} U {3,4} = {1,2,3,4}
+
+    // If one set is a finite set and the other is a finite complement, then their
+    // intersection is a finite set comprised of the elements in the finite set, but
+    // not in the complement of the finite set (i.e. the set difference).
+    // e.g. {1,2} intersect R \ {2} = {1} where {1,2} \ {2} = {1}.
+    // this applies to either when this is a finite complement or other is a finite complement.
+
+    // If both sets are finite sets, then their intersection is a finite set of their
+    // intersection.
+    // e.g. {1,2} intersect {1,3} = {1}
 
     if (this.isInf && other.isInf) {
       return new SimpleSet(true, this.pointSet.union(other.pointSet));
@@ -185,11 +230,35 @@ public class SimpleSet {
    * @return this minus other
    */
   public SimpleSet difference(SimpleSet other) {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct
     // NOTE: There is more than one correct way to implement this.
+    // If both sets are finite complements, then their difference is a finite set with
+    // elements that are in the complement of the other set, but not in the complement
+    // of this set.
+    // e.g. R \ {1} \ R \ {1,2,3} = {2, 3} = {1,2,3} \ {1}
 
-    return new SimpleSet(new float[] {});
+    // If this set is an infinite set, and the other set is finite, then their difference
+    // is an infinite set with it complement being the union of the complement of this set
+    // and the other set.
+    // e.g. R \ {1,2} \ {3,4} = R \ {1,2,3,4} where {1,2,3,4} = {1,2} U {3,4}
+
+    // If this set is a finite set, and the other set is infinite, then their difference
+    // is a finite set with elements that are intersection of this set and the complement
+    // of the other set.
+    // e.g. {1,2} \ R \ {1,2,3,4} = {1,2} = {1,2} intersect {1,2,3,4}
+
+    // If both sets are finite sets, then their difference is a finite set with
+    // the elements being this set difference with the other set.
+    // e.g. {1,2} \ {1,3} = {2}
+
+    if (this.isInf && other.isInf) {
+      return new SimpleSet(false, other.pointSet.difference(this.pointSet));
+    } else if (this.isInf) {
+      return new SimpleSet(true, this.pointSet.union(other.pointSet));
+    } else if (other.isInf) {
+      return new SimpleSet(false, this.pointSet.intersection(other.pointSet));
+    } else {
+      return new SimpleSet(false, this.pointSet.difference(other.pointSet));
+    }
   }
 
 }

@@ -31,8 +31,13 @@ public class SimpleSetTest {
   /** Tests converting a set to a string. */
   @Test
   public void testToString() {
-    // TODO: implement this
-    
+    assertEquals("R", R.toString());
+    assertEquals("R \\ {1.0}", R1.toString());
+    assertEquals("R \\ {1.0, 2.0}", R12.toString());
+
+    assertEquals("{}", S.toString());
+    assertEquals("{1.0}", S1.toString());
+    assertEquals("{1.0, 2.0}", S12.toString());
   }
 
   private static SimpleSet S = new SimpleSet(new float[0]);
