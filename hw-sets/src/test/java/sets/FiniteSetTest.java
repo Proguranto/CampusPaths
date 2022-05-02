@@ -53,8 +53,6 @@ public class FiniteSetTest {
     assertEquals(S12.size(), 2);
   }
 
-  // TODO: Feel free to initialize (private static) FiniteSet objects here
-  //       if you plan to use them for the tests below.
   private static FiniteSet SNeg = FiniteSet.of(new float[] {-2, 3}); // Negative set.
   private static FiniteSet S13 = FiniteSet.of(new float[] {1, 3});
   private static FiniteSet S3 = FiniteSet.of(new float[] {3});
