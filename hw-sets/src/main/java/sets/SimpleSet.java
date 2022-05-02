@@ -1,5 +1,7 @@
 package sets;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,9 +13,18 @@ import java.util.List;
  */
 public class SimpleSet {
 
-  // TODO: fill in and document the representation
-  //       Make sure to include the representation invariant (RI)
-  //       and the abstraction function (AF).
+  // If this is a finite set, then the points are stored in a FiniteSet.
+  // If this is an infinite set, then the points that are not in the
+  // set are stored in a FiniteSet.
+  // isInf checks if the set is infinite or finite.
+  // RI: pointSet != null and pointSet does not contain any points that are NaNs,
+  //     infinities, and duplicates.
+  // AF(this) = {pointSet.getPoints().get(0), ...,
+  //             pointSet.getPoints().get(pointSet.length-1)}        if isInf = false.
+  //            R \ {pointSet.getPoints().get(0), pointSet[1], ...,
+  //                 pointSet.getPoints().get(pointSet.length-1)}    otherwise.
+  private final boolean isInf;
+  private final FiniteSet pointSet;
 
   /**
    * Creates a simple set containing only the given points.
@@ -22,8 +33,10 @@ public class SimpleSet {
    * @spec.effects this = {vals[0], vals[1], ..., vals[vals.length-1]}
    */
   public SimpleSet(float[] vals) {
-    // TODO: implement this
-
+    this.isInf = false;
+    vals = Arrays.copyOf(vals, vals.length);
+    Arrays.sort(vals);
+    this.pointSet = FiniteSet.of(vals);
   }
 
   /**
@@ -34,8 +47,14 @@ public class SimpleSet {
    * @spec.effects this = R \ points if complement else points
    */
   private SimpleSet(boolean complement, FiniteSet points) {
-    // TODO: implement this
-
+    this.isInf = complement;
+    List<Float> copy = List.copyOf(points.getPoints());
+    float[] vals = new float[copy.size()];
+    for (int i = 0; i < vals.length; i++) {
+      vals[i] = copy.get(i);
+    }
+    Arrays.sort(vals);
+    this.pointSet = FiniteSet.of(vals);
   }
 
   @Override
@@ -44,7 +63,11 @@ public class SimpleSet {
       return false;
 
     SimpleSet other = (SimpleSet) o;
-    return this == other;  // TODO: replace this with a correct check
+    if (this.isInf == other.isInf) {
+      return this.pointSet.equals(other.pointSet);
+    } else {
+      return false;
+    }
   }
 
   @Override
@@ -58,9 +81,11 @@ public class SimpleSet {
    *         infty  if this = R \ {p1, p2, ..., pN}
    */
   public float size() {
-    // TODO: implement this
+    // If the set is infinity return infinity.
+    if (isInf) return Float.POSITIVE_INFINITY;
 
-    return 0;
+    // If the set is not infinity return the size of infinity.
+    return this.pointSet.size();
   }
 
   /**
@@ -84,10 +109,20 @@ public class SimpleSet {
    * @return R \ this
    */
   public SimpleSet complement() {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct (hint: cases)
+    // If this is an infinite set that has a finite number of points that aren't
+    // in the set (could be 0 points), then this complement is a finite set that
+    // are the points that aren't in the infinite set. Thus, with my representation
+    // I just have to flip the value of isInf and now its a finite set with the
+    // points in pointSet, which were the points not in the infinite set.
+    // e.g. R \ {1, 3}, the complement = {1, 3}.
 
-    return new SimpleSet(new float[] {});
+    // If this is a finite set, then this complement is an infinite set that does
+    // not contain the points in the finite set. Therefore, with my representation,
+    // I just have to flip the value of isInf, and now it represents an inf set
+    // without points in pointSet, which were the points in the finite set.
+    // e.g. {1, 2}, the complement = R \ {1, 2}.
+
+    return new SimpleSet(!isInf, this.pointSet);
   }
 
   /**
