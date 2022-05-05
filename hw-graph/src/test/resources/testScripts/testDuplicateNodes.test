@@ -1,0 +1,12 @@
+# Tests graph creation with a simple graph with
+# 2 nodes, when adding 2 of the same edges.
+
+# Create a graph
+CreateGraph graph1
+
+# Add the same node twice
+AddNode graph1 n1
+AddNode graph1 n1
+
+#Print the nodes in the graph
+ListNodes graph1

@@ -1,8 +1,0 @@
-# Tests acyclic graph creation/viewing of a graph
-# with 1 node
-
-CreateGraph graph1
-
-AddNode graph1 n1
-
-ListNodes graph1

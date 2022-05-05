@@ -1,0 +1,12 @@
+# Tests graph creation with a simple graph with
+# 2 nodes, when adding 2 of the same edges.
+
+# Create a graph
+created graph graph1
+
+# Add the same node twice
+added node n1 to graph1
+added node n1 to graph1
+
+#Print the nodes in the graph
+graph1 contains: n1
