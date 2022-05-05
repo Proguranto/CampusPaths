@@ -13,9 +13,6 @@ public class Graph {
 
     /**
      * Creates an empty graph.
-     *
-     * @spec.modifies this
-     * @spec.effects this = empty graph
      */
     public Graph() {
         // TODO: Implement this.
@@ -55,26 +52,15 @@ public class Graph {
     }
 
     /**
-     * Checks whether there exist an edge from node a to b, in this.
+     * Checks whether there exist an edge with label from node a to b, in this.
      *
      * @param a parent node
      * @param b child node
-     * @return true if there exist an edge from node a to b, in this
-     * @spec.requires a != null and b != null
+     * @param label edge label
+     * @return true if there exist an edge with label from node a to b, in this
+     * @spec.requires a != null and b != null and label != null
      */
-    public boolean containsEdge(Node a, Node b) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
-    }
-
-    /**
-     * Gets all the parent nodes of node n in lexicographical (alphabetical) order.
-     *
-     * @param n
-     * @return a list of all the parent nodes of n in lexicographical (alphabetical) order
-     * @spec.requires n != null
-     */
-    public List<Node> getParents(Node n) {
+    public boolean containsEdge(Node a, Node b, String label) {
         // TODO: Implement this.
         throw new RuntimeException("This method is not yet implemented.");
     }
@@ -94,14 +80,13 @@ public class Graph {
     /**
      * Gets all the nodes in this.
      *
-     * @return a list of all the nodes in this in lexicographical (alphabetical) order
+     * @return a list of all the nodes in this in lexicographical (alphabetical) order, if
+     *         this is empty, then return empty list.
      */
     public List<Node> getNodes() {
         // TODO: Implement this.
         throw new RuntimeException("This method is not yet implemented.");
     }
-
-    // consider that nodes might be modified
 
     /**
      * Adds a node n to this.
@@ -130,57 +115,52 @@ public class Graph {
     }
 
     /**
-     * Adds an edge from node a to node b.
+     * Adds an edge with label from node a to node b.
      *
      * @param a parent node
      * @param b child node
-     * @spec.requires a != null and b != null
+     * @param label edge label
+     * @spec.requires a != null and b != null and label != null
      * @spec.modifies this
-     * @spec.effects adds an edge from a to b, if a and b exist in this
+     * @spec.effects adds an edge with label from a to b, if a and b exist in this
      */
-    public void addEdge(Node a, Node b) {
+    public void addEdge(Node a, Node b, String label) {
         // TODO: Implement this.
         throw new RuntimeException("This method is not yet implemented.");
     }
 
     /**
-     * Removes an edge from node a to b in this.
+     * Removes an edge with label from node a to b in this.
      *
      * @param a parent node
      * @param b child node
-     * @spec.requires a != null and b != null
+     * @param label edge label
+     * @spec.requires a != null and b != null and label != null
      * @spec.modifies this
-     * @spec.effects removes an edge from a to b, if a and b exist in this and
-     *               there exist an edge from a to b
+     * @spec.effects removes an edge with label from a to b, if a and b exist in this and
+     *               there exist an edge with label from a to b
      */
-    public void removeEdge(Node a, Node b) {
+    public void removeEdge(Node a, Node b, String label) {
         // TODO: Implement this.
         throw new RuntimeException("This method is not yet implemented.");
     }
-
-    // size
-    // isEmpty
-    // containsNode
-    // containsEdge
-    // getParents
-    // getChildren
-    // getNodes
-    // entrySet
-    // path
-
-    // equals
-    // hashcode
-
-    // addNode
-    // removeNode
-    // addEdge
-    // removeEdge
 
     /**
      * Represents a node and contains information about the edges and
      * edge labels from the node.
      */
     class Node {
+
+        /**
+         * Creates a node with a name.
+         *
+         * @param name node's name
+         * @spec.requires name != null
+         */
+        public Node(String name) {
+            //TODO: Implement this.
+            throw new RuntimeException("This method is not yet implemented.");
+        }
 
         @Override
         public boolean equals(Object o) {
@@ -197,7 +177,4 @@ public class Graph {
             throw new RuntimeException("This method is not yet implemented.");
         }
     }
-
-    // equals
-    // hashCode
 }

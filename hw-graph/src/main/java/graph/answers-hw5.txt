@@ -8,9 +8,99 @@ interface to a graph. If your design includes multiple classes or interfaces, ex
 included each one; if not, explain whether you considered additional classes and why you decided
 not to include them.
 
+In my design, my graph is mutable as I want to be able to make continuous changes in my graphs:
+adding/removing edges and nodes, etc. In my implementation, I plan not to give the client any
+access to the fields of my graph or nodes, but rather copies of it to prevent representation
+exposure.
 
-TODO: Your answer here!
+I also disallowed the graph to contain duplicate nodes as it may cause confusion in certain
+cases. I also disallowed edges that have the same parent and child node to have the same label
+as it also causes confusion.
 
+In my graph implementation I included the constructor:
+
+graph():
+I designed it this way so that the user can create an empty graph and then add whatever nodes
+and edges they would like to. I did not design it in a way where the user can create a graph
+with a node or list of nodes, because I think that it's the same as creating a graph and then
+adding the nodes one by one, and also it might overcomplicate creating edges between nodes.
+
+Then for the graph functionality, I included:
+
+size():
+This allows the client to quickly get the number of nodes in the graph. This could be important
+for the client maybe when traversing through the nodes in the graph or possibly setting a restriction
+in the number of nodes a graph can have.
+
+isEmpty():
+This allows the client to quickly check if the graph contains no nodes. This could be important
+for certain graph operations, e.g. if the client is trying to remove all the nodes in the graph,
+this functionality can be used as a condition to stop when the graph is empty.
+
+addNode():
+This allows the client to add a node to the graph. This is important to a graph functionality, e.g.
+in a campus map, if you want to add a new building then this method allows you to do so. This is
+important for adding new information to the graph.
+
+removeNode():
+This allows the client to remove a node to the graph. This is important to graph functionality as it
+allows the client to continuously update information in the graph. e.g. in campus map, if a building
+was destroyed due to a natural disaster, then they can update the map not to include that building.
+
+containsNode():
+This allows the client to check if a node exists in the graph. This is important to graph functionality
+as it allows the client to look for certain nodes in graphs. e.g. in a campus map, if they want to check
+whether a certain building is in the map, they can do so with this functionality.
+
+addEdge():
+This allows the client to add an edge to the graph. This is important to graph functionality as it allows
+the client to continuously update information in the graph. e.g. in a campus map, if a new path between two
+locations is built, then I can update the path in the map.
+
+removeEdge():
+This allows the client to remove an edge to the graph. This is important to graph functionality as it allows
+the client to continuously update information in the graph. e.g. in a campus map, if a path was removed between
+two locations, then I can update the map to remove that path.
+
+containsEdge():
+This allows the client to check if an edge exist in the graph. This is important to graph functionality as it
+allows the client to look for a specific edge in the graph. e.g. in a campus map, if they want to check if
+there is a path between two buildings that is 5 meters apart, they can find it with this functionality.
+
+getChildren():
+This allows the client to get all the children nodes of a node. This is important to graph functionality as
+it allows the client to get the children nodes for a specific node. e.g. in a campus map, if I want to check
+which locations I can go to from a specific location, this functionality allows me to do so.
+
+getNodes():
+This allows the client to get all the nodes in the graph. This important to graph functionality as it
+allows the client to be able to view all the nodes, maybe to traverse through the nodes, etc. e.g. in a campus
+map, if I want to see all the locations in the campus, I can do so with this functionality.
+
+In my graph implementation, I also have an additional class for nodes.
+
+I chose this design decision because I want the nodes to store information about itself and edges, in particular,
+the nodes' relationship between its child nodes and parent nodes. This is also easier, for me to compare between
+nodes by implementing an equals() method.
+
+I also designed my nodes to be immutable to avoid representation exposure. I have not completely decided how I'm
+going to be able to change the edges inside the nodes, but I will think about this in the future.
+
+For nodes, my constructor is:
+
+node():
+This creates a node with no edges to or from it and has a name.
+
+equals():
+This allows the comparison between two nodes and determine if they're equal as the graph does not
+allow duplicate nodes.
+
+hashCode():
+This allows the nodes to be stored in hashMaps.
+
+I chose not to add edge as an additional class because I wasn't exactly sure how I would be able to store information
+that node A has an edge to node B. I only found it convenient for the edge object to be able to store the label, but
+besides that I thought it would make the implementation difficult.
 
 ## Part 3
 ###########################################################################

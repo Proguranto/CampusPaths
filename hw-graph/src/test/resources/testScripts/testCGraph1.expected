@@ -1,0 +1,12 @@
+# Tests cyclic graph creation/viewing of a graph
+# with 1 node
+
+created graph1
+
+added node n1 to graph1
+
+added edge e1 from n1 to n1 in graph1
+
+graph1 contains: n1
+
+the children of n1 in graph1 are: n1(e1)

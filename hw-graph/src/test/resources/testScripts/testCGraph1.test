@@ -1,0 +1,12 @@
+# Tests cyclic graph creation/viewing of a graph
+# with 1 node
+
+CreateGraph graph1
+
+AddNode graph1 n1
+
+AddEdge graph1 n1 n1 e1
+
+ListNodes graph1
+
+ListChildren graph1 n1
