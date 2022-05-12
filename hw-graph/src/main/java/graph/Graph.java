@@ -1,6 +1,10 @@
 package graph;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a mutable directed labeled graph.
@@ -14,254 +18,306 @@ import java.util.List;
  */
 public class Graph {
 
+    public final static boolean DEBUG = true;
+
+    // Nodes and Edges are stored in a set.
+    //
+    // RI: edges != null and nodes != null and
+    //     !edges.contains(null) and !nodes.contains(null)
+    // AF(this) = A directed a labeled graph with
+    //            nodes: all elements in nodes
+    //            edges: all elements in edges
+    private Set<Edge> edges;
+
+    private Set<Node> nodes;
+
     /**
      * Creates an empty graph.
+     *
+     * @spec.effects creates an empty graph
      */
     public Graph() {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+        edges = new HashSet<>();
+        nodes = new HashSet<>();
+
+        checkRep();
     }
 
     /**
-     * The number of nodes in this.
+     * Gets the number of nodes in the graph.
      *
-     * @return the number of nodes in this
+     * @return the number of nodes in the graph
      */
     public int sizeNode() {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+        checkRep();
+        return nodes.size();
     }
 
     /**
-     * The number of edges in this.
+     * Gets the number of edges in the graph.
      *
-     * @return the number of nodes in this
+     * @return the number of edges in the graph
      */
     public int sizeEdge() {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+        checkRep();
+        return edges.size();
     }
 
     /**
-     * Checks if this contains a node with the name n.
+     * Checks if the graph contains a node n.
      *
      * @param n target node
-     * @return true if this contains node n, false otherwise
-     * @throws IllegalArgumentException if n = null
+     * @return true if the graph contains node n, false otherwise
      * @spec.requires n != null
      */
     public boolean containsNode(Node n) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+        checkRep();
+        return nodes.contains(n);
     }
 
     /**
-     * Checks whether there exist an edge with label "label" from parent
-     * node to child node.
+     * Checks whether there exist an edge e in the graph.
      *
-     * @param parent parent node
-     * @param child child node
-     * @param label edge label
-     * @return true if there exist an edge with label "label" from parent node
-     * to child node.
-     * @throws IllegalArgumentException if parent = null or child = null or label = null
-     * @spec.requires parent != null and child != null and label != null
+     * @param e target edge
+     * @return true if there exist an edge e in the graph
+     * @spec.requires e != null
      */
-    public boolean containsEdge(Node parent, Node child, String label) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+    public boolean containsEdge(Edge e) {
+        checkRep();
+        return edges.contains(e);
     }
 
     /**
-     * Gets all the children nodes of node n in lexicographical (alphabetical) order.
+     * Gets all the outgoing edges of node n.
      *
-     * @param n node to get children of
-     * @return a list of all the children nodes of n in lexicographical (alphabetical) order
-     * @throws IllegalArgumentException if n = null
+     * @param n node to get outgoing edges of
+     * @return a list of all the outgoing edges of n
      * @spec.requires n != null
      */
-    public List<Node> getChildren(Node n) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+    public List<Edge> childrenOf(Node n) {
+        checkRep();
+
+        // Finding outgoing edges.
+        List<Edge> children = new ArrayList<>();
+        for (Edge e : edges) {
+            if (e.parent.equals(n)) {
+                children.add(e);
+            }
+        }
+
+        checkRep();
+        return children;
     }
 
     /**
-     * Gets all the nodes in this.
+     * Gets all the nodes in the graph.
      *
-     * @return list of all the nodes in this
+     * @return list of all the nodes in the graph
      */
-    public List<Node> getNodes() {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+    public List<Node> listNodes() {
+        checkRep();
+
+        // Copy-out to avoid rep exposure.
+        List<Node> result = new ArrayList<>();
+        for (Node n : nodes) {
+            result.add(n);
+        }
+
+        checkRep();
+        return result;
     }
 
     /**
-     * Gets all the edges in this.
+     * Inserts a node n to the graph.
      *
-     * @return list of all the edges in this
-     */
-    public List<Node> getEdges() {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
-    }
-
-
-    /**
-     * Adds a node n to this.
-     *
-     * @param n node to be added to this
-     * @throws IllegalArgumentException if n = null
-     * @spec.requires n != null
-     * @spec.modifies this
-     * @spec.effects adds n to this, if node with same value as n exist in this
-     *               then does nothing
-     */
-    public void addNode(Node n) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
-    }
-
-    /**
-     * Removes a node n from this.
-     *
-     * @param n node to be removed
-     * @throws IllegalArgumentException if n = null
+     * @param n node to be added to the graph
+     * @return true if adds node n to the graph, false otherwise
      * @spec.requires n != null
      * @spec.modifies this
-     * @spec.effects removes n from this if n exist in this, otherwise nothing
+     * @spec.effects inserts n to the graph and return true, if node with same value
+     *               as n exist in the graph then does nothing and return false
      */
-    public void removeNode(Node n) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+    public boolean insertNode(Node n) {
+        checkRep();
+
+        Boolean b = nodes.add(n);
+
+        checkRep();
+        return b;
     }
 
     /**
-     * Adds an edge to this.
+     * Inserts an edge e to the graph.
      *
-     * @param e edge to be added to this
-     * @throws IllegalArgumentException if e = null
+     * @param e edge to be added to the graph
+     * @return true if adds edge e to graph, false otherwise
      * @spec.requires e != null
      * @spec.modifies this
-     * @spec.effects adds edge e to this, if edge with same value as e already
-     *               exist in this, then does nothing
+     * @spec.effects inserts edge e to the graph and returns true, if edge with same value as e already
+     *               exist in the graph or if graph does not have the child or parent node
+     *               in edge, then does nothing and return false
      */
-    public void addEdge(Edge e) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
+    public boolean insertEdge(Edge e) {
+        checkRep();
+
+        if (nodes.contains(e.child) && nodes.contains(e.parent)) {
+            Boolean b = edges.add(e);
+            checkRep();
+            return b;
+        }
+
+        checkRep();
+        return false;
     }
 
     /**
-     * Removes an edge from this.
-     *
-     * @param e edge to be removed
-     * @throws IllegalArgumentException if e = null
-     * @spec.requires e != null
-     * @spec.modifies this
-     * @spec.effects removes edge e from this if e exist in this, otherwise nothing
-     */
-    public void removeEdge(Edge e) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
-    }
-
-    /**
-     * Changes the label of an edge in this.
-     *
-     * @param e edge that label is to be changed
-     * @param newLabel new label for edge
-     * @return true if label of e is successfully changed to newLabel, otherwise false
-     * @throws IllegalArgumentException if e = null or newLabel = null
-     * @spec.requires e != null and newLabel != null
-     * @spec.modifies this
-     * @spec.effects changes the label of e to newLabel if e exist in graph and does
-     *               not create a duplicate edge in this
-     */
-    public boolean changeLabel(Edge e, String newLabel) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
-    }
-
-    /**
-     * Changes the name of a node in this.
-     *
-     * @param n node that name is to be changed
-     * @param newName new name for edge
-     * @return true if name is successfully changed to newName, otherwise false
-     * @throws IllegalArgumentException if n = null or newName = null
-     * @spec.requires n != null and newName != null
-     * @spec.modifies this
-     * @spec.effects changes the name of n to newName if n exist in graph and
-     *               changing it does not create a duplicate node in this
-     */
-    public boolean changeNodeName(Node n, String newName) {
-        // TODO: Implement this.
-        throw new RuntimeException("This method is not yet implemented.");
-    }
-
-    /**
-     * Represents a mutable node and contains information about the edges and
+     * Represents an immutable node and contains information about the edges and
      * edge labels from the node.
      */
     public class Node {
 
+        // Node's label is stored as a string.
+        //
+        // RI: label != null
+        // AF(this) = Node with label: label
+        private final String label;
+
         /**
-         * Creates a node with a name.
+         * Creates a node with a label.
          *
-         * @param name node's name
-         * @spec.requires name != null
+         * @param label node's label
+         * @spec.requires label != null
+         * @spec.effects creates a node with a label
          */
-        public Node(String name) {
-            //TODO: Implement this.
-            throw new RuntimeException("This method is not yet implemented.");
+        public Node(String label) {
+            this.label = label;
+
+            checkRep();
+        }
+
+        /**
+         * Gets the label of the node.
+         *
+         * @return node's label
+         */
+        public String getLabel() {
+            return this.label;
         }
 
         @Override
         public boolean equals(Object o) {
+            checkRep();
             if (!(o instanceof Node)) {
                 return false;
             }
-            //TODO: Implement this.
-            throw new RuntimeException("This method is not yet implemented.");
+
+            Node other = (Node) o;
+            checkRep();
+            return this.label.equals(other.label);
         }
 
         @Override
         public int hashCode() {
-            //TODO: Implement this.
-            throw new RuntimeException("This method is not yet implemented.");
+            checkRep();
+            return label.hashCode();
+        }
+
+        private void checkRep() {
+            assert label != null : "this.label is null!";
         }
     }
 
     /**
-     * Represents a mutable edge with a label, parent node, and child node.
+     * Represents an immutable edge with a label, parent node, and child node.
      */
     public class Edge {
+
+        // Stores the parent node and child node as a Node, and label as a String.
+        //
+        // RI: parent != null and child != null and label != null
+        // AF(this) = Edge with parent node: parent
+        //                      child node: child
+        //                      label: label
+        private final Node parent;
+
+        private final Node child;
+
+        private final String label;
 
         /**
          * Creates an edge with a label, parent node, and child node.
          *
-         * @param parent name of parent node
-         * @param child name of child node
+         * @param parent parent node
+         * @param child child node
          * @param label edge label
          * @spec.requires parent != null and child != null and label != null
          */
-        public Edge(String parent, String child, String label) {
-            //TODO: Implement this.
-            throw new RuntimeException("This method is not yet implemented.");
+        public Edge(Node parent, Node child, String label) {
+            this.parent = parent;
+            this.child = child;
+            this.label = label;
+
+            checkRep();
+        }
+
+        /**
+         * Gets the edge's label.
+         *
+         * @return edge's label
+         */
+        public String getLabel() {
+            return this.label;
+        }
+
+        /**
+         * Gets the edge's child node.
+         *
+         * @return edge's child node
+         */
+        public Node getChild() {
+            return this.child;
+        }
+
+        /**
+         * Gets the edge's parent node.
+         *
+         * @return edge's parent node
+         */
+        public Node getParent() {
+            return this.parent;
         }
 
         @Override
         public boolean equals(Object o) {
+            checkRep();
             if (!(o instanceof Edge)) {
                 return false;
             }
-            //TODO: Implement this.
-            throw new RuntimeException("This method is not yet implemented.");
+
+            Edge other = (Edge) o;
+            checkRep();
+            return this.parent.equals(other.parent) && this.child.equals(other.child)
+                    && this.label.equals(other.label);
         }
 
         @Override
         public int hashCode() {
-            //TODO: Implement this.
-            throw new RuntimeException("This method is not yet implemented.");
+            return (this.parent.hashCode() + this.label.hashCode()) * this.child.hashCode();
+        }
+
+        private void checkRep() {
+            assert parent != null : "this.parent is null!";
+            assert child != null : "this.child is null!";
+            assert label != null : "this.label is null!";
+        }
+    }
+
+    private void checkRep() {
+        assert this.edges != null : "this.edges is null!";
+        assert this.nodes != null : "this.nodes is null!";
+        if (DEBUG) {
+            assert !this.edges.contains(null) : "this.edges has a null element!";
+            assert !this.nodes.contains(null) : "this.nodes has a null element!";
         }
     }
 }
