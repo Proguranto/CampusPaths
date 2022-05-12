@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public class Graph {
 
-    public final static boolean DEBUG = true;
+    public final static boolean DEBUG = false;
 
     // Nodes and Edges are stored in a set.
     //
@@ -171,8 +171,7 @@ public class Graph {
     }
 
     /**
-     * Represents an immutable node and contains information about the edges and
-     * edge labels from the node.
+     * Represents an immutable node with a label.
      */
     public class Node {
 
