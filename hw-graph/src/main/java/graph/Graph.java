@@ -20,13 +20,14 @@ public class Graph {
 
     public final static boolean DEBUG = false;
 
-    // Nodes and Edges are stored in a set.
+    // The nodes and edges within the graph are stored in the sets of nodes
+    // and edges respectively.
     //
     // RI: edges != null and nodes != null and
     //     !edges.contains(null) and !nodes.contains(null)
     // AF(this) = A directed a labeled graph with
-    //            nodes: all elements in nodes
-    //            edges: all elements in edges
+    //            nodes: all elements in set nodes
+    //            edges: all elements in set edges
     private Set<Edge> edges;
 
     private Set<Node> nodes;
