@@ -1,6 +1,5 @@
 package graph;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,8 +14,11 @@ import java.util.Set;
  * Abstract Invariant: No two nodes have the same name, no 2 edges
  *                     with the same parent and child nodes will have
  *                     the same edge label.
+ *
+ * @param <E> Edge label type
+ * @param <N> Node label type
  */
-public class Graph {
+public class Graph<N extends Comparable<N>, E extends Comparable<E>> {
 
     public final static boolean DEBUG = false;
 
@@ -28,9 +30,9 @@ public class Graph {
     // AF(this) = A directed a labeled graph with
     //            nodes: all elements in set nodes
     //            edges: all elements in set edges
-    private Set<Edge> edges;
+    private Set<Edge<N,E>> edges;
 
-    private Set<Node> nodes;
+    private Set<Node<N>> nodes;
 
     /**
      * Creates an empty graph.
@@ -71,7 +73,7 @@ public class Graph {
      * @return true if the graph contains node n, false otherwise
      * @spec.requires n != null
      */
-    public boolean containsNode(Node n) {
+    public boolean containsNode(Node<N> n) {
         checkRep();
         return nodes.contains(n);
     }
@@ -83,7 +85,7 @@ public class Graph {
      * @return true if there exist an edge e in the graph
      * @spec.requires e != null
      */
-    public boolean containsEdge(Edge e) {
+    public boolean containsEdge(Edge<N,E> e) {
         checkRep();
         return edges.contains(e);
     }
@@ -95,12 +97,12 @@ public class Graph {
      * @return a list of all the outgoing edges of n
      * @spec.requires n != null
      */
-    public List<Edge> childrenOf(Node n) {
+    public List<Edge<N,E>> childrenOf(Node<N> n) {
         checkRep();
 
         // Finding outgoing edges.
-        List<Edge> children = new ArrayList<>();
-        for (Edge e : edges) {
+        List<Edge<N,E>> children = new ArrayList<>();
+        for (Edge<N,E> e : edges) {
             if (e.parent.equals(n)) {
                 children.add(e);
             }
@@ -115,12 +117,12 @@ public class Graph {
      *
      * @return list of all the nodes in the graph
      */
-    public List<Node> listNodes() {
+    public List<Node<N>> listNodes() {
         checkRep();
 
         // Copy-out to avoid rep exposure.
-        List<Node> result = new ArrayList<>();
-        for (Node n : nodes) {
+        List<Node<N>> result = new ArrayList<>();
+        for (Node<N> n : nodes) {
             result.add(n);
         }
 
@@ -138,10 +140,10 @@ public class Graph {
      * @spec.effects inserts n to the graph and return true, if node with same value
      *               as n exist in the graph then does nothing and return false
      */
-    public boolean insertNode(Node n) {
+    public boolean insertNode(Node<N> n) {
         checkRep();
 
-        Boolean b = nodes.add(n);
+        boolean b = nodes.add(n);
 
         checkRep();
         return b;
@@ -158,11 +160,11 @@ public class Graph {
      *               exist in the graph or if graph does not have the child or parent node
      *               in edge, then does nothing and return false
      */
-    public boolean insertEdge(Edge e) {
+    public boolean insertEdge(Edge<N, E> e) {
         checkRep();
 
         if (nodes.contains(e.child) && nodes.contains(e.parent)) {
-            Boolean b = edges.add(e);
+            boolean b = edges.add(e);
             checkRep();
             return b;
         }
@@ -173,14 +175,16 @@ public class Graph {
 
     /**
      * Represents an immutable node with a label.
+     *
+     * @param <N> Node label type
      */
-    public class Node {
+    public static class Node<N extends Comparable<N>> {
 
-        // Node's label is stored as a string.
+        // Node's label is stored as type N.
         //
         // RI: label != null
         // AF(this) = Node with label: label
-        private final String label;
+        private final N label;
 
         /**
          * Creates a node with a label.
@@ -189,7 +193,7 @@ public class Graph {
          * @spec.requires label != null
          * @spec.effects creates a node with a label
          */
-        public Node(String label) {
+        public Node(N label) {
             this.label = label;
 
             checkRep();
@@ -200,18 +204,18 @@ public class Graph {
          *
          * @return node's label
          */
-        public String getLabel() {
+        public N getLabel() {
             return this.label;
         }
 
         @Override
         public boolean equals(Object o) {
             checkRep();
-            if (!(o instanceof Node)) {
+            if (!(o instanceof Node<?>)) {
                 return false;
             }
 
-            Node other = (Node) o;
+            Node<?> other = (Node<?>) o;
             checkRep();
             return this.label.equals(other.label);
         }
@@ -229,20 +233,22 @@ public class Graph {
 
     /**
      * Represents an immutable edge with a label, parent node, and child node.
+     *
+     * @param <N> Node label type
      */
-    public class Edge {
+    public static class Edge<N extends Comparable<N>, E extends Comparable<E>> {
 
-        // Stores the parent node and child node as a Node, and label as a String.
+        // Stores the parent node and child node as a Node, and label as type E.
         //
         // RI: parent != null and child != null and label != null
         // AF(this) = Edge with parent node: parent
         //                      child node: child
         //                      label: label
-        private final Node parent;
+        private final Node<N> parent;
 
-        private final Node child;
+        private final Node<N> child;
 
-        private final String label;
+        private final E label;
 
         /**
          * Creates an edge with a label, parent node, and child node.
@@ -252,7 +258,7 @@ public class Graph {
          * @param label edge label
          * @spec.requires parent != null and child != null and label != null
          */
-        public Edge(Node parent, Node child, String label) {
+        public Edge(Node<N> parent, Node<N> child, E label) {
             this.parent = parent;
             this.child = child;
             this.label = label;
@@ -265,7 +271,7 @@ public class Graph {
          *
          * @return edge's label
          */
-        public String getLabel() {
+        public E getLabel() {
             return this.label;
         }
 
@@ -274,7 +280,7 @@ public class Graph {
          *
          * @return edge's child node
          */
-        public Node getChild() {
+        public Node<N> getChild() {
             return this.child;
         }
 
@@ -283,18 +289,18 @@ public class Graph {
          *
          * @return edge's parent node
          */
-        public Node getParent() {
+        public Node<N> getParent() {
             return this.parent;
         }
 
         @Override
         public boolean equals(Object o) {
             checkRep();
-            if (!(o instanceof Edge)) {
+            if (!(o instanceof Edge<?,?>)) {
                 return false;
             }
 
-            Edge other = (Edge) o;
+            Edge<?,?> other = (Edge<?,?>) o;
             checkRep();
             return this.parent.equals(other.parent) && this.child.equals(other.child)
                     && this.label.equals(other.label);

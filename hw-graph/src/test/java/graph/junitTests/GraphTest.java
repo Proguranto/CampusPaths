@@ -15,43 +15,43 @@ public class GraphTest {
     @Rule public Timeout globalTimeout = Timeout.seconds(10);
     // 10 seconds max per method tested
 
-    private static Graph g0 = new Graph();
+    private static Graph<String, String> g0 = new Graph<>();
 
-    private static Graph g10 = new Graph();
+    private static Graph<String, String> g10 = new Graph<>();
 
-    private static Graph g11 = new Graph();
+    private static Graph<String, String> g11 = new Graph<>();
 
-    private static Graph g12 = new Graph();
+    private static Graph<String, String> g12 = new Graph<>();
 
-    private static Graph g20 = new Graph();
+    private static Graph<String, String> g20 = new Graph<>();
 
-    private static Graph g21 = new Graph();
+    private static Graph<String, String> g21 = new Graph<>();
 
-    private static Graph g22 = new Graph();
+    private static Graph<String, String> g22 = new Graph<>();
 
-    private static Graph.Node n1 = g0.new Node("n1");
+    private static Graph.Node<String> n1 = new Graph.Node<>("n1");
 
-    private static Graph.Node n2 = g0.new Node("n2");
+    private static Graph.Node<String> n2 = new Graph.Node<>("n2");
 
-    private static Graph.Node n3 = g0.new Node("n3");
+    private static Graph.Node<String> n3 = new Graph.Node<>("n3");
 
-    private static Graph.Node dup = g0.new Node("n3");
+    private static Graph.Node<String> dup = new Graph.Node<>("n3");
 
-    private static Graph.Node dup2 = g0.new Node("n3");
+    private static Graph.Node<String> dup2 = new Graph.Node<>("n3");
 
-    private static Graph.Edge e11a = g0.new Edge(n1, n1, "e11a");
+    private static Graph.Edge<String, String> e11a = new Graph.Edge<>(n1, n1, "e11a");
 
-    private static Graph.Edge e11b = g0.new Edge(n1, n1, "e11b");
+    private static Graph.Edge<String, String> e11b = new Graph.Edge<>(n1, n1, "e11b");
 
-    private static Graph.Edge e12 = g0.new Edge(n1, n2, "e12");
+    private static Graph.Edge<String, String> e12 = new Graph.Edge<>(n1, n2, "e12");
 
-    private static Graph.Edge e21 = g0.new Edge(n2, n1, "e21");
+    private static Graph.Edge<String, String> e21 = new Graph.Edge<>(n2, n1, "e21");
 
-    private static Graph.Edge e32 = g0.new Edge(n3, n2, "e12");
+    private static Graph.Edge<String, String> e32 = new Graph.Edge<>(n3, n2, "e12");
 
-    private static Graph.Edge dup3 = g0.new Edge(n3, n2, "e12");
+    private static Graph.Edge<String, String> dup3 = new Graph.Edge<>(n3, n2, "e12");
 
-    private static Graph.Edge dup4 = g0.new Edge(n3, n2, "e12");
+    private static Graph.Edge<String, String> dup4 = new Graph.Edge<>(n3, n2, "e12");
 
     @BeforeClass
     public static void m() {
@@ -81,100 +81,100 @@ public class GraphTest {
     @Test
     public void testNodeEquals() {
         // Reflexive
-        assertTrue(n1.equals(n1));
+        assertEquals(n1,n1);
 
         // Symmetric
-        assertTrue(n3.equals(dup));
-        assertTrue(dup.equals(n3));
+        assertEquals(n3,dup);
+        assertEquals(dup,n3);
 
         // Transitive
-        assertTrue(n3.equals(dup));
-        assertTrue(dup.equals(dup2));
-        assertTrue(n3.equals(dup2));
+        assertEquals(n3,dup);
+        assertEquals(dup,dup2);
+        assertEquals(n3,dup2);
 
         // Consistent
-        assertTrue(n1.equals(n1));
+        assertEquals(n1,n1);
 
         // False with null
-        assertFalse(n1.equals(null));
+        assertNotEquals(n1,null);
 
         // Failure case
-        assertFalse(n1.equals(n2));
+        assertNotEquals(n1,n2);
     }
 
     // Testing hashCode() for Nodes.
     @Test
     public void testNodeHashCode() {
-        assertTrue(n1.hashCode() == n1.hashCode());
-        assertTrue(n3.equals(dup));
-        assertTrue(n3.hashCode() == dup.hashCode());
+        assertEquals(n1.hashCode(),n1.hashCode());
+        assertEquals(n3,dup);
+        assertEquals(n3.hashCode(),dup.hashCode());
 
         // Failure case
-        assertFalse(n1.hashCode() == n2.hashCode());
+        assertNotEquals(n1.hashCode(),n2.hashCode());
     }
 
     // Testing equals() for Edge.
     @Test
     public void testEdgeEquals() {
         // Reflexive
-        assertTrue(e12.equals(e12));
+        assertEquals(e12,e12);
 
         // Symmetric
-        assertTrue(e32.equals(dup3));
-        assertTrue(dup3.equals(e32));
+        assertEquals(e32, dup3);
+        assertEquals(dup3,e32);
 
         // Transitive
-        assertTrue(e32.equals(dup3));
-        assertTrue(dup3.equals(dup4));
-        assertTrue(e32.equals(dup4));
+        assertEquals(e32,dup3);
+        assertEquals(dup3,dup4);
+        assertEquals(e32,dup4);
 
         // Consistent
-        assertTrue(e12.equals(e12));
+        assertEquals(e12,e12);
 
         // False with null
-        assertFalse(e12.equals(null));
+        assertNotEquals(e12,null);
 
         // Failure case
-        assertFalse(e12.equals(e21));
+        assertNotEquals(e12,e21);
     }
 
     // Testing hashCode() for Edge.
     @Test
     public void testEdgeHashCode() {
-        assertTrue(e12.hashCode() == e12.hashCode());
-        assertTrue(e32.equals(dup3));
-        assertTrue(e32.hashCode() == dup3.hashCode());
+        assertEquals(e12.hashCode(), e12.hashCode());
+        assertEquals(e32,dup3);
+        assertEquals(e32.hashCode(),dup3.hashCode());
 
         // Failure case
-        assertFalse(e12.hashCode() == e32.hashCode());
+        assertNotEquals(e12.hashCode(),e32.hashCode());
     }
 
     // Testing getLabel() for Node.
     @Test
     public void testNodeGetLabel() {
-        assertTrue(n1.getLabel().equals("n1"));
-        assertFalse(n1.getLabel().equals("n2"));
+        assertEquals(n1.getLabel(),"n1");
+        assertNotEquals(n1.getLabel(),"n2");
     }
 
     // Testing getLabel() for Edge.
     @Test
     public void testEdgeGetLabel() {
-        assertTrue(e12.getLabel().equals("e12"));
-        assertFalse(e12.getLabel().equals("e32"));
+        assertEquals(e12.getLabel(),"e12");
+        assertNotEquals(e12.getLabel(),"e32");
     }
 
     // Testing getChild() for Edge.
     @Test
     public void testEdgeGetChild() {
-        assertTrue(e12.getChild().equals(n2));
-        assertFalse(e12.getChild().equals(n1));
+        assertEquals(e12.getChild(),n2);
+        assertNotEquals(e12.getChild(),n1);
     }
 
     //Testing getParent() for Edge.
     @Test
     public void testEdgeGetParent() {
-        assertTrue(e12.getParent().equals(n1));
-        assertFalse(e12.getParent().equals(n2));
+        assertEquals(e12.getParent(),n1);
+        assertNotEquals(e12.getParent(),n2);
     }
 
     // Testing sizeNode() for graphs with different number of nodes.
