@@ -18,7 +18,7 @@ import java.util.Set;
  * @param <E> Edge label type
  * @param <N> Node label type
  */
-public class Graph<N extends Comparable<N>, E extends Comparable<E>> {
+public class Graph<N, E> {
 
     public final static boolean DEBUG = false;
 
@@ -103,7 +103,7 @@ public class Graph<N extends Comparable<N>, E extends Comparable<E>> {
         // Finding outgoing edges.
         List<Edge<N,E>> children = new ArrayList<>();
         for (Edge<N,E> e : edges) {
-            if (e.parent.equals(n)) {
+            if (e.getParent().equals(n)) {
                 children.add(e);
             }
         }
@@ -178,7 +178,7 @@ public class Graph<N extends Comparable<N>, E extends Comparable<E>> {
      *
      * @param <N> Node label type
      */
-    public static class Node<N extends Comparable<N>> {
+    public static class Node<N> {
 
         // Node's label is stored as type N.
         //
@@ -236,7 +236,7 @@ public class Graph<N extends Comparable<N>, E extends Comparable<E>> {
      *
      * @param <N> Node label type
      */
-    public static class Edge<N extends Comparable<N>, E extends Comparable<E>> {
+    public static class Edge<N, E> {
 
         // Stores the parent node and child node as a Node, and label as type E.
         //

@@ -37,7 +37,7 @@ public class Point {
 
     /**
      * Constructs a new ordered pair using the provided coordinates. Neither coordinate
-     * may be NaN or infinite.
+     * may be NaN nor infinite.
      *
      * @param x The x coordinate.
      * @param y The y coordinate.

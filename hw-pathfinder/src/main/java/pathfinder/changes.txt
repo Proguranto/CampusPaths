@@ -7,7 +7,7 @@ as I used Node and Edge types in my Graph, thus they require type parameters whi
 the type parameters for Graph.
 
 ^Making Node, Edge, and Graph generic means that I had to change return types of methods and
-types of fields. The type parameters are comparable because the test driver requires sorting.
+types of fields.
 
 Second, I made my Node and Edge classes static inner classes because I want the client to be able to
 create nodes and edges without constructing a Graph instance. Additionally, it would be nice for
