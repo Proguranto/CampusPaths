@@ -1,0 +1,17 @@
+# Find a path with Dijkstra's algorithm when
+# the graph is cyclic and there are multiple paths
+# from start to dest node with same edge weights.
+
+CreateGraph graph7
+
+AddNode graph7 S
+AddNode graph7 1
+AddNode graph7 2
+AddNode graph7 D
+
+AddEdge graph7 S 1 0.0
+AddEdge graph7 1 2 0.0
+AddEdge graph7 2 S 0.0
+AddEdge graph7 S D 1.0
+
+FindPath graph7 S D

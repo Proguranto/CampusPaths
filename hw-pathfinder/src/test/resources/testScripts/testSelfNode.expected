@@ -1,0 +1,10 @@
+# Find a path with Dijkstra's algorithm when
+# the start node = dest node.
+
+created graph graph9
+
+added node S to graph9
+
+path from S to S:
+S to S with weight 0.000
+total cost: 0.000

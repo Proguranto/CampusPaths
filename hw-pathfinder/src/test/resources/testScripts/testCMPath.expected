@@ -1,0 +1,22 @@
+# Find a path with Dijkstra's algorithm when
+# the graph is cyclic and there is multiple paths
+# from start to dest node.
+
+created graph graph5
+
+added node S to graph5
+added node 1 to graph5
+added node 2 to graph5
+added node 3 to graph5
+added node D to graph5
+
+added edge 1.000 from S to 1 in graph5
+added edge 1.000 from 1 to 2 in graph5
+added edge 1.700 from 2 to S in graph5
+added edge 2.000 from S to 3 in graph5
+added edge 3.000 from 3 to D in graph5
+added edge 2.000 from S to D in graph5
+
+path from S to D:
+S to D with weight 2.000
+total cost: 2.000

@@ -1,0 +1,20 @@
+# Find a path with Dijkstra's algorithm when
+# the graph is acyclic and there are multiple paths
+# from start to dest node with same edge weights.
+
+created graph graph6
+
+added node S to graph6
+added node 1 to graph6
+added node 2 to graph6
+added node D to graph6
+
+added edge 1.000 from S to 1 in graph6
+added edge 1.000 from S to 2 in graph6
+added edge 1.000 from 1 to D in graph6
+added edge 1.000 from 2 to D in graph6
+
+path from S to D:
+S to 1 with weight 1.000
+1 to D with weight 1.000
+total cost: 2.000

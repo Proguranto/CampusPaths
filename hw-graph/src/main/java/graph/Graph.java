@@ -131,6 +131,24 @@ public class Graph<N, E> {
     }
 
     /**
+     * Gets all the edges in the graph.
+     *
+     * @return list of all the edges in the graph
+     */
+    public List<Edge<N,E>> listEdges() {
+        checkRep();
+
+        // Copy-out to avoid rep exposure.
+        List<Edge<N,E>> result = new ArrayList<>();
+        for (Edge<N,E> e : edges) {
+            result.add(e);
+        }
+
+        checkRep();
+        return result;
+    }
+
+    /**
      * Inserts a node n to the graph.
      *
      * @param n node to be added to the graph
