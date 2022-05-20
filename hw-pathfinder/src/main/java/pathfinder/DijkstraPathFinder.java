@@ -35,7 +35,6 @@ public class DijkstraPathFinder<N,E extends Number> {
      *               algorithm.
      */
     public DijkstraPathFinder(Graph<N,E> graph) {
-        checkRep();
         this.graph = new Graph<>();
 
         // Copy-in to avoid rep exposure.
