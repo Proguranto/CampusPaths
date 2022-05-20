@@ -239,28 +239,31 @@ public class PathfinderTestDriver {
         Graph.Node<String> start = new Graph.Node<>(startNode);
         Graph.Node<String> dest = new Graph.Node<>(destNode);
         DijkstraPathFinder<String, Double> d = new DijkstraPathFinder<>(g);
-        Path<Graph.Node<String>> path = d.shortestPathFinder(start, dest);
+        Path<String> path = d.shortestPathFinder(start.getLabel(), dest.getLabel());
 
-        output.println("path from " + startNode + " to " + destNode + ":");
-        if (!g.containsNode(start) && g.containsNode(dest)) {
-            output.println("unknown: " + start.getLabel());
-        } else if (g.containsNode(start) && !g.containsNode(dest)) {
-            output.println("unknown: " + dest.getLabel());
-        } else if (!g.containsNode(start) && !g.containsNode(dest)) {
-            output.println("unknown: " + start.getLabel() + ", " + dest.getLabel());
-        } else if (path == null) {
-            output.println("no path found");
-        } else if (start.equals(dest)) {
-            String pathCost = String.format("%.3f", path.getCost());
-            output.println(start.getLabel() + " to " + dest.getLabel() + " with weight " + pathCost);
-            output.println("total cost: " + pathCost);
-        } else {
-            for (Path<Graph.Node<String>>.Segment p : path) {
-                String pathCost = String.format("%.3f", p.getCost());
-                output.println(p.getStart().getLabel() + " to " + p.getEnd().getLabel() + " with weight " + pathCost);
+        if (!g.containsNode(start) || !g.containsNode(dest)) {
+            if (!g.containsNode(start)) {
+                output.println("unknown: " + start.getLabel());
             }
-            String totalCost = String.format("%.3f", path.getCost());
-            output.println("total cost: " + totalCost);
+            if (!g.containsNode(dest)) {
+                output.println("unknown: " + dest.getLabel());
+            }
+        } else {
+            output.println("path from " + startNode + " to " + destNode + ":");
+            if (path == null) {
+                output.println("no path found");
+            } else if (start.equals(dest)) {
+                String pathCost = String.format("%.3f", path.getCost());
+                output.println(start.getLabel() + " to " + dest.getLabel() + " with weight " + pathCost);
+                output.println("total cost: " + pathCost);
+            } else {
+                for (Path<String>.Segment p : path) {
+                    String pathCost = String.format("%.3f", p.getCost());
+                    output.println(p.getStart() + " to " + p.getEnd()+ " with weight " + pathCost);
+                }
+                String totalCost = String.format("%.3f", path.getCost());
+                output.println("total cost: " + totalCost);
+            }
         }
     }
 

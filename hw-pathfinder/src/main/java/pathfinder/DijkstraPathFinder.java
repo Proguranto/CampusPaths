@@ -15,9 +15,12 @@ import java.util.*;
  */
 public class DijkstraPathFinder<N,E extends Number> {
 
+    private static final boolean DEBUG = false;
+
     // The graph to find the shortest path in.
     //
     // RI: graph != null and edge labels in the graph are non-negative
+    //     and graph does not contain null.
     // AF(this) = shortestPathFinder() returns the shortest path in the graph
     //            that is passed in the constructor from the given start and
     //            end nodes.
@@ -32,7 +35,7 @@ public class DijkstraPathFinder<N,E extends Number> {
      *               algorithm.
      */
     public DijkstraPathFinder(Graph<N,E> graph) {
-        assert graph != null;
+        checkRep();
         this.graph = new Graph<>();
 
         // Copy-in to avoid rep exposure.
@@ -43,6 +46,7 @@ public class DijkstraPathFinder<N,E extends Number> {
             assert(e.getLabel().doubleValue() >= 0);
             this.graph.insertEdge(e);
         }
+        checkRep();
     }
 
     /**
@@ -55,12 +59,16 @@ public class DijkstraPathFinder<N,E extends Number> {
      * @spec.requires start != null and dest != null and
      *                start and dest are nodes in the graph
      */
-    public Path<Graph.Node<N>> shortestPathFinder(Graph.Node<N> start, Graph.Node<N> dest) {
-        if (!graph.containsNode(start) || !graph.containsNode(dest)) return null;
+    public Path<N> shortestPathFinder(N start, N dest) {
+        checkRep();
+        Graph.Node<N> startNode = new Graph.Node<>(start);
+        Graph.Node<N> destNode = new Graph.Node<>(dest);
 
-        Comparator<Path<Graph.Node<N>>> compPaths = new Comparator<>() {
+        if (!graph.containsNode(startNode) || !graph.containsNode(destNode)) return null;
+
+        Comparator<Path<N>> compPaths = new Comparator<>() {
             @Override
-            public int compare(Path<Graph.Node<N>> o1, Path<Graph.Node<N>> o2) {
+            public int compare(Path<N> o1, Path<N> o2) {
                 if (o1.getCost() > o2.getCost()) {
                     return 1;
                 } else if (o1.getCost() < o2.getCost()) {
@@ -71,17 +79,18 @@ public class DijkstraPathFinder<N,E extends Number> {
             }
         };
 
-        Queue<Path<Graph.Node<N>>> active = new PriorityQueue<>(compPaths);
+        Queue<Path<N>> active = new PriorityQueue<>(compPaths);
         Set<Graph.Node<N>> finished = new HashSet<>();
         active.add(new Path<>(start));
 
         // Invariant: Any node in finished has already had the min-cost path found.
         //            Active contains new paths to be explored.
         while(active.size() != 0) {
-            Path<Graph.Node<N>> minPath = active.remove();
-            Graph.Node<N> minDest = minPath.getEnd();
+            Path<N> minPath = active.remove();
+            Graph.Node<N> minDest = new Graph.Node<>(minPath.getEnd());
 
-            if (minDest.equals(dest)) {
+            if (minDest.equals(destNode)) {
+                checkRep();
                 return minPath;
             }
 
@@ -91,7 +100,7 @@ public class DijkstraPathFinder<N,E extends Number> {
 
             for (Graph.Edge<N,E> e : graph.childrenOf(minDest)) {
                 if (!finished.contains(e.getChild())) {
-                    Path<Graph.Node<N>> newPath = minPath.extend(e.getChild(), e.getLabel().doubleValue());
+                    Path<N> newPath = minPath.extend(e.getChild().getLabel(), e.getLabel().doubleValue());
                     active.add(newPath);
                 }
             }
@@ -99,7 +108,18 @@ public class DijkstraPathFinder<N,E extends Number> {
             finished.add(minDest);
         }
         // No more paths to be explored or found min-cost path to dest node.
-
+        checkRep();
         return null;
+    }
+
+    private void checkRep() {
+        assert graph != null : "graph is null!";
+        if (DEBUG) {
+            for(Graph.Edge<N,E> e : graph.listEdges()) {
+                assert e.getLabel().doubleValue() >= 0 : "path cost is negative!";
+            }
+            assert !graph.containsNode(null) : "graph contains null!";
+            assert !graph.containsEdge(null) : "graph contains null!";
+        }
     }
 }

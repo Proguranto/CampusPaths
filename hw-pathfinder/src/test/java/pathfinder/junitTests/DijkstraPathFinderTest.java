@@ -33,9 +33,9 @@ public class DijkstraPathFinderTest {
     // or nodes do not exist in graph.
     @Test
     public void testShortestPathFinder() {
-        assertNull(d.shortestPathFinder(n3, n3));
-        assertNull(d.shortestPathFinder(n3, n2));
-        assertNull(d.shortestPathFinder(n2, n3));
-        assertNull(d.shortestPathFinder(n2,n3));
+        assertNull(d.shortestPathFinder(n3.getLabel(), n3.getLabel()));
+        assertNull(d.shortestPathFinder(n3.getLabel(), n2.getLabel()));
+        assertNull(d.shortestPathFinder(n2.getLabel(), n3.getLabel()));
+        assertNull(d.shortestPathFinder(n2.getLabel(), n3.getLabel()));
     }
 }

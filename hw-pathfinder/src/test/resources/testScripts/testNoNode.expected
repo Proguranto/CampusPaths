@@ -13,11 +13,9 @@ added edge 1.000 from S to 2 in graph8
 added edge 1.000 from 1 to D in graph8
 added edge 1.000 from 2 to D in graph8
 
-path from 3 to D:
 unknown: 3
 
-path from S to 3:
 unknown: 3
 
-path from 3 to 4:
-unknown: 3, 4
+unknown: 3
+unknown: 4

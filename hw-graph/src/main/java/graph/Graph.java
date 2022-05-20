@@ -223,6 +223,7 @@ public class Graph<N, E> {
          * @return node's label
          */
         public N getLabel() {
+            checkRep();
             return this.label;
         }
 
@@ -290,6 +291,7 @@ public class Graph<N, E> {
          * @return edge's label
          */
         public E getLabel() {
+            checkRep();
             return this.label;
         }
 
@@ -299,6 +301,7 @@ public class Graph<N, E> {
          * @return edge's child node
          */
         public Node<N> getChild() {
+            checkRep();
             return this.child;
         }
 
@@ -308,6 +311,7 @@ public class Graph<N, E> {
          * @return edge's parent node
          */
         public Node<N> getParent() {
+            checkRep();
             return this.parent;
         }
 

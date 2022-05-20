@@ -11,6 +11,7 @@
 
 package pathfinder.textInterface;
 
+import pathfinder.CampusMap;
 import pathfinder.ModelAPI;
 import pathfinder.datastructures.Path;
 import pathfinder.datastructures.Point;
