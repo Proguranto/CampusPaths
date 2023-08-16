@@ -17,6 +17,146 @@ and only exists for aesthetic purposes. The app would work just fine if this
 file was empty.
 */
 
+html {
+    background: rgb(66, 65, 65);
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 20vh;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+}
+
+.header-title {
+    flex-grow: 1;
+    text-align: center;
+    font-family: 'Spicy Rice', cursive;
+    font-size: 3rem;
+    color: #33006f;
+    text-shadow: 
+        1px 0px 1px #ccc, 0px 1px 1px #eee, 
+        2px 1px 1px #ccc, 1px 2px 1px #eee,
+        3px 2px 1px #ccc, 2px 3px 1px #eee,
+        4px 3px 1px #ccc, 3px 4px 1px #eee,
+        5px 4px 1px #ccc, 4px 5px 1px #eee,
+        6px 5px 1px #ccc, 5px 6px 1px #eee,
+        7px 6px 1px #ccc;
+}
+
+.header-img-1 {
+    width: 5rem;
+    height: 5rem;
+    margin: 1rem;
+}
+
+.header-img-2 {
+    width: 7rem;
+    height: 7rem;
+    margin: 1rem;
+}
+
+.map-container {
+    position: absolute;
+    top: 20vh;
+    left: 0;
+    width: 100vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.map-text {
+    width: 35vw;
+    margin: 1rem;
+    border: 0.25rem ridge white;
+    border-radius: 0.5rem;
+    overflow-y: scroll;
+}
+
+.map-text h2 {
+    font-family: 'Spicy Rice', cursive;
+    color: white;
+    text-align: center;
+    font-size: 1.7rem;
+}
+
+.map-text p {
+    font-family: 'Spicy Rice', cursive;
+    color: white;
+    font-size: 1.2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    width: 48ch;
+}
+
+.map-selection {
+    display: flex;
+    flex-direction: row;
+}
+
+.start {
+    margin: 2rem;
+    width: 15vw;
+    display: inline-block;
+}
+
+label {
+    font-family: 'Spicy Rice', cursive;
+    color: white;
+    font-size: 1.4rem;
+    width: 15vw;
+    display: inline-block;
+}
+
+.end {
+    margin: 2rem;
+    width: 15vw;
+    display: inline-block
+}
+
+.map-img {
+    width: 65vw;
+    margin: 1rem;
+
+}
+
+.start input {
+    width: 10vw;
+}
+
+.autocomplete-list {
+    list-style: none;
+    padding: unset;
+    margin: unset;
+    overflow-y: scroll;
+    width: 10.4vw;
+    height: 7vw;
+}
+
+.autocomplete-list li {
+    border: 1px solid rgb(156, 136, 136);
+    background: white;
+    border-top: unset;
+}
+
+.autocomplete-list li:hover {
+    background: rgb(175, 166, 166);
+}
+
+.autocomplete-list button {
+    border: unset;
+    background: unset;
+    cursor: pointer;
+    display: block;
+    text-align: left;
+    padding: 0.5em;
+}
+
 /* Centers component with ID "map-wrapper" and sets width and bottom spacing */
 #map {
     margin-left: auto;
