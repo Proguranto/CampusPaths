@@ -1,0 +1,18 @@
+# Find a path with Dijkstra's algorithm when
+# the graph is acyclic and there is no path
+# from start to dest node.
+
+CreateGraph graph1
+
+AddNode graph1 S
+AddNode graph1 1
+AddNode graph1 2
+AddNode graph1 3
+AddNode graph1 D
+
+AddEdge graph1 S 1 1.0
+AddEdge graph1 S 2 1.0
+AddEdge graph1 1 3 2.5
+AddEdge graph1 2 3 2.0
+
+FindPath graph1 S D

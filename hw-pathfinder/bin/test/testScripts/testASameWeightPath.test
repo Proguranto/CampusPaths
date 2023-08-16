@@ -1,0 +1,17 @@
+# Find a path with Dijkstra's algorithm when
+# the graph is acyclic and there are multiple paths
+# from start to dest node with same edge weights.
+
+CreateGraph graph6
+
+AddNode graph6 S
+AddNode graph6 1
+AddNode graph6 2
+AddNode graph6 D
+
+AddEdge graph6 S 1 1.0
+AddEdge graph6 S 2 1.0
+AddEdge graph6 1 D 1.0
+AddEdge graph6 2 D 1.0
+
+FindPath graph6 S D

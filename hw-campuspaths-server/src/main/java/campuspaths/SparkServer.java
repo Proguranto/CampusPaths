@@ -11,7 +11,15 @@
 
 package campuspaths;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import com.google.gson.Gson;
+
 import campuspaths.utils.CORSFilter;
+import pathfinder.CampusMap;
+import spark.Route;
+import spark.Spark;
 
 public class SparkServer {
 
@@ -23,7 +31,26 @@ public class SparkServer {
         // comes from a different server.
         // You should leave these two lines at the very beginning of main().
 
-        // TODO: Create all the Spark Java routes you need here.
+
+        CampusMap map = new CampusMap();
+        
+        Spark.get("/locations", new Route() {
+        @Override
+        public Object handle(spark.Request request, spark.Response response) throws Exception {
+            // Convert Map buildings to a list of names.
+            List<String> mapNames = new LinkedList<>();
+            for (String shortName : map.buildingNames().keySet()) {
+                // String name = shortName + ", " + map.buildingNames().get(shortName);
+                mapNames.add(map.buildingNames().get(shortName));
+            }
+
+
+            Gson gson = new Gson();
+            String jsonResponse = gson.toJson(mapNames);
+
+            return jsonResponse;
+        }
+        });
     }
 
 }

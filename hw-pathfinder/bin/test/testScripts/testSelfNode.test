@@ -1,0 +1,8 @@
+# Find a path with Dijkstra's algorithm when
+# the start node = dest node.
+
+CreateGraph graph9
+
+AddNode graph9 S
+
+FindPath graph9 S S

@@ -1,0 +1,17 @@
+# Find a path with Dijkstra's algorithm when
+# the graph is cyclic and there is no path
+# from start to dest node.
+
+created graph graph2
+
+added node S to graph2
+added node 1 to graph2
+added node 2 to graph2
+added node D to graph2
+
+added edge 1.000 from S to 1 in graph2
+added edge 1.000 from 1 to 2 in graph2
+added edge 1.000 from 2 to S in graph2
+
+path from S to D:
+no path found

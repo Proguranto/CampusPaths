@@ -1,0 +1,20 @@
+# Tests graph creation/viewing with a cyclic
+# graph with 2 nodes and 4 edges.
+
+# Create a graph
+CreateGraph graph1
+
+# Add a pair of nodes
+AddNode graph1 n1
+AddNode graph1 n2
+
+# Add 4 edges
+AddEdge graph1 n1 n2 e1
+AddEdge graph1 n2 n1 e2
+AddEdge graph1 n1 n2 e3
+AddEdge graph1 n2 n1 e4
+
+# Print the nodes in the graph and the outgoing edges from n1 and n2
+ListNodes graph1
+ListChildren graph1 n1
+ListChildren graph1 n2

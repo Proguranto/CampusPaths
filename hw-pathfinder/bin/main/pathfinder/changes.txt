@@ -1,0 +1,15 @@
+Briefly list any changes you made to your graph class during hw-pathfinder, and why you made those changes.
+
+First, I changed the Node and Edge inner class to generic classes as I want their labels to
+not be specific only to Strings, but other types as well to represent other things.
+Additionally, this means my Graph class needs to be a generic class as I needed to add types
+as I used Node and Edge types in my Graph, thus they require type parameters which would be
+the type parameters for Graph.
+
+^Making Node, Edge, and Graph generic means that I had to change return types of methods and
+types of fields.
+
+Second, I made my Node and Edge classes static inner classes because I want the client to be able to
+create nodes and edges without constructing a Graph instance. Additionally, it would be nice for
+the client to create different nodes and edges of different types, without it being restricted
+to the Graphs type that is used to create them.

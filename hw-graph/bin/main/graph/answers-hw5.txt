@@ -1,0 +1,40 @@
+## CSE 331 hw-graph Coding Questions
+
+## Part 2
+###########################################################################
+
+Briefly explain why you included the operations you did and why you feel they are a sufficient
+interface to a graph. If your design includes multiple classes or interfaces, explain why you
+included each one; if not, explain whether you considered additional classes and why you decided
+not to include them.
+
+First I included the basic operations a graph should have which are adding/removing nodes, and
+adding/removing edges because you want to be able to continuously update your graph. In addition,
+I added functionality such as changing labels of edges or changing names of nodes with the same
+reasoning to be able to keep updating the graph. Then, I added methods that describe states of the
+graph such as contains node/edge, sizeNode, sizeEdge, getNodes, getEdges, and getChildren because
+this can help the clients in implementing certain graph algorithms.
+
+In my design, I chose two create two inner classes "Node" and "Edge". First of all, I made these
+classes mutable because I want to be able to change its fields. The reason why I chose to create
+these classes is because it would help the client distinguish what a Node is and what an Edge is
+from other types.
+
+## Part 3
+###########################################################################
+
+What was your testing strategy for this assignment? How do your script tests and JUnit tests
+differ from each other (if they do), and why?
+
+
+My testing strategy for this assignment was to: First, consider what I was able to test with
+the test scripts, which were mainly creating different type of graphs, testing if
+adding node/edges worked, getting the nodes in the graph, and getting the children of a particular
+node. Then, for functionality that I wasn't able to implement in the script tests such as removing
+node/edges or changing labels/names, I would add these to the JUnit tests. Next, I would consider
+what exceptions some methods could throw and would see if I could catch them with the JUnit tests
+as I can't test them in test scripts. Lastly, I would see what are some impossible behavior that
+could happen and test it in JUnit, e.g. removing a node that doesn't exist in the graph or changing
+the label of an edge that doesn't exist.
+
+These were my testing strategy and how I seperated the script test from the JUnit test.

@@ -1,0 +1,92 @@
+## CSE 331 HW6 Questions
+
+NOTE: This file is used as part of HW6, and is not due as part of the HW5
+submission. You may leave it blank for HW5.
+
+## Part 1
+###########################################################################
+
+A few examples of possible Graph representations:
+
+    A: A collection of nodes and a collection of edges.
+    B: An adjacency list, in which each node is associated with a list of its outgoing edges.
+    C: An adjacency matrix, which explicitly represents, for every pair ⟨A,B⟩ of nodes, whether there 
+       is a link from A to B, and how many.
+
+1. In two or three sentences, explain an advantage and a disadvantage of each of the
+representations listed above (for example, in terms of runtime complexity, space
+complexity, or ease of implementation).
+
+A:
+Advantages:
+This representation will have the most ease of implementation as most operations will mainly involve
+iterating through the collections of nodes/edges. Additionally, adding to the list of edges and
+nodes would be really quick as we would only need to append it to the list and that's O(1) runtime.
+
+Disadvantages:
+Some operations such as finding the children of a node would be unnecessary longer and more difficult
+to implement compared to B since we would have to look through all the edges to find the children.
+
+B:
+Advantages:
+Finding the children of a node would be easier to implement and fast as each node stores information
+about its outgoing edges and thus, we can immediately find its outgoing edges.
+This is important for path finding Graph algorithms, thus it would be nice to have.
+
+Disadvantages:
+Adding edges would be much more difficult to implement as we would need to look for the node to add
+the edge to. Additionally, it would be more difficult to look for edges as we would need to look through
+each node and its edges.
+
+C:
+Advantages:
+Suppose we uniquely define each node to have an index. Then, it would be easy to add an edge between two
+nodes as you would find their indices in the matrix and change the value and that's O(1) runtime.
+
+Disadvantages:
+This representation would be space heavy as we would need to store each node as a parent and child in the
+matrix, basically if n is the number of nodes, the matrix would have a size of n^{2}.
+Additionally, whenever we add more nodes, we would need to resize it, and it would be costly to resize
+a matrix of size n^{2}.
+
+
+
+
+2. In two to three sentences, describe the representation you chose and explain why you
+chose it. If you chose to use a different representation than one of the three we described
+above, be sure to list its advantages and disadvantages, too.
+
+When choosing my representation initially, I focus on the simplest implementation so that
+I can prioritize correctness first as I can always change the representation in the future.
+With that in mind, I decided to choose representation A as I believe with my design. I find
+that representation A is has the simplest implementation for my design as I designed my class
+to contain two inner classes for Node and Edge and storing them in Collections would be a
+nice way to keep track of the nodes and edges in the graph.
+
+
+## Part 4
+###########################################################################
+
+    (Please keep your answers brief and to-the-point.)
+
+1. Describe any new tests you added and why you added them, or why you feel that your original
+tests alone are sufficient.
+
+I added several cases to each test function as I added more test cases for different graphs. In
+addition, I added a test for insertEdge() in JUnit because in my implementation I had an if case
+to check for and tested the boundary cases. I added tests for equals() and hashCode() for nodes
+and edges where I tested the properties for equals and hashcode such as reflexive.
+
+
+2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
+If yes, describe your changes and why you made them.
+
+Yes. First I changed childrenOf to return a list of edges instead of nodes because
+I believe that receiving the list of edges is more useful in a graph algorithm as you may want
+to check edge labels. I also changed insert nodes/edges to return a boolean value so the client
+knows if they successfully inserted the edge/node. My most important change was that I made
+my Node and Edge class immutable, which gave me more ease in implementation as I wouldn't have
+to worry about rep exposure when taking it as a parameter or returning a list of it. Furthermore,
+I did add some observer methods for my inner class such as get... in order to use it for the script
+tests.
+

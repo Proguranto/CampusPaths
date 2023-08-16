@@ -1,0 +1,20 @@
+# Find a path with Dijkstra's algorithm when
+# the graph is cyclic and there is multiple paths
+# from start to dest node.
+
+CreateGraph graph5
+
+AddNode graph5 S
+AddNode graph5 1
+AddNode graph5 2
+AddNode graph5 3
+AddNode graph5 D
+
+AddEdge graph5 S 1 1.0
+AddEdge graph5 1 2 1.0
+AddEdge graph5 2 S 1.7
+AddEdge graph5 S 3 2.0
+AddEdge graph5 3 D 3.0
+AddEdge graph5 S D 2.0
+
+FindPath graph5 S D
