@@ -16,10 +16,6 @@ import map from "./img/map.png";
 
 // Allows us to write CSS styles inside App.css, any styles will apply to all components inside <App />
 import "./App.css";
-import { stat } from 'fs';
-import path from 'path';
-import { start } from 'repl';
-import { setEmitFlags } from 'typescript';
 
 interface MapState {
     startText: string;
@@ -58,7 +54,7 @@ class Map extends React.Component<{}, MapState> {
             if (text.length >= 1) {
                 this.state.locations.forEach((location: string) => {
                     let shortName = location.split(",", 1)[0];
-                    let longName = location.substring(shortName.length + 1);
+                    let longName = location.substring(shortName.length + 2);
                     if ((text.toLowerCase() === shortName.substring(0, text.length).toLowerCase())
                         || (text.toLowerCase() === longName.substring(0, text.length).toLowerCase())) {
                         filteredList.push(location);
@@ -71,7 +67,7 @@ class Map extends React.Component<{}, MapState> {
             if (text.length >= 1) {
                 this.state.locations.forEach((location: string) => {
                     let shortName = location.split(",", 1)[0];
-                    let longName = location.substring(shortName.length + 1);
+                    let longName = location.substring(shortName.length + 2);
                     if ((text.toLowerCase() === shortName.substring(0, text.length).toLowerCase())
                         || (text.toLowerCase() === longName.substring(0, text.length).toLowerCase())) {
                         filteredList.push(location);
@@ -190,7 +186,7 @@ class Map extends React.Component<{}, MapState> {
     }
 
     render() {
-        if (this.state.locations.length == 0)   this.getLocations();
+        if (this.state.locations.length === 0)   this.getLocations();
         return (
             <div className='map-container'>
                 <div className='map-text'>
