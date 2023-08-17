@@ -129,7 +129,12 @@ label {
     width: 10vw;
 }
 
+.end input {
+    width: 10vw;
+}
+
 .autocomplete-list {
+    position: absolute;
     list-style: none;
     padding: unset;
     margin: unset;
@@ -155,6 +160,19 @@ label {
     display: block;
     text-align: left;
     padding: 0.5em;
+}
+
+.find {
+    margin-left: 14.5vw;
+}
+
+.results h3 {
+    text-align: left;
+    font-family: 'Spicy Rice', cursive;
+    color: white;
+    font-size: 1.4rem;
+    margin-left: 2rem;
+    margin-top: 7rem;
 }
 
 /* Centers component with ID "map-wrapper" and sets width and bottom spacing */

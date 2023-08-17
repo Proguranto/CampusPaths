@@ -18,6 +18,10 @@ import com.google.gson.Gson;
 
 import campuspaths.utils.CORSFilter;
 import pathfinder.CampusMap;
+import pathfinder.datastructures.Path;
+import pathfinder.datastructures.Point;
+import spark.Request;
+import spark.Response;
 import spark.Route;
 import spark.Spark;
 
@@ -40,8 +44,8 @@ public class SparkServer {
             // Convert Map buildings to a list of names.
             List<String> mapNames = new LinkedList<>();
             for (String shortName : map.buildingNames().keySet()) {
-                // String name = shortName + ", " + map.buildingNames().get(shortName);
-                mapNames.add(map.buildingNames().get(shortName));
+                String name = shortName + ", " + map.buildingNames().get(shortName);
+                mapNames.add(name);
             }
 
 
@@ -50,6 +54,32 @@ public class SparkServer {
 
             return jsonResponse;
         }
+        });
+
+        Spark.get("/check", new Route() {
+
+            @Override
+            public Object handle(Request request, Response response) throws Exception {
+                String start = request.queryParams("start");
+                String end = request.queryParams("end");
+                return map.shortNameExists(start) && map.shortNameExists(end);
+            }
+            
+        });
+
+        Spark.get("/path", new Route() {
+
+            @Override
+            public Object handle(Request request, Response response) throws Exception {
+                String start = request.queryParams("start");
+                String end = request.queryParams("end");
+                Path<Point> path = map.findShortestPath(start, end);
+                if (path == null) {
+                    return "none";
+                }
+                return path.toString();
+            }
+            
         });
     }
 
